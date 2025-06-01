@@ -1,0 +1,149 @@
+[
+  {
+    "county": "Vrancea",
+    "label": "DLMdd",
+    "type": "radon",
+    "mean": 107.74,
+    "alert": "green"
+  },
+  {
+    "county": "Vrancea",
+    "label": "LOPRdd",
+    "type": "radon",
+    "mean": 7.69,
+    "alert": "green"
+  },
+  {
+    "county": "Vrancea",
+    "label": "NEHRdd",
+    "type": "radon",
+    "mean": 461.45,
+    "alert": "green"
+  },
+  {
+    "county": "Vrancea",
+    "label": "PANCdd",
+    "type": "radon",
+    "mean": 79.85,
+    "alert": "green"
+  },
+  {
+    "county": "Vrancea",
+    "label": "VRI2Sdd",
+    "type": "radon",
+    "mean": 139.57,
+    "alert": "green"
+  },
+  {
+    "county": "Vrancea",
+    "label": "PLORSdd",
+    "type": "radon",
+    "mean": 21.96,
+    "alert": "green"
+  },
+  {
+    "county": "Vrancea",
+    "label": "GZRdd",
+    "type": "radon",
+    "mean": 78.15,
+    "alert": "green"
+  },
+  {
+    "county": "Constan\u021ba",
+    "label": "EFORadon",
+    "type": "radon",
+    "mean": 181.45,
+    "alert": "green"
+  },
+  {
+    "county": "Constan\u021ba",
+    "label": "EFORco",
+    "type": "co2",
+    "mean": 140.91,
+    "alert": "green"
+  },
+  {
+    "county": "Vrancea",
+    "label": "BISRCO2",
+    "type": "co2",
+    "mean": 510.02,
+    "alert": "green"
+  },
+  {
+    "county": "Gorj",
+    "label": "DLMCO2",
+    "type": "co2",
+    "mean": 320.87,
+    "alert": "green"
+  },
+  {
+    "county": "Prahova",
+    "label": "MlrCO2",
+    "type": "co2",
+    "mean": 329.92,
+    "alert": "green"
+  },
+  {
+    "county": "Prahova",
+    "label": "LOPrCO2",
+    "type": "co2",
+    "mean": 401.9,
+    "alert": "green"
+  },
+  {
+    "county": "Constan\u021ba",
+    "label": "ACP",
+    "type": "acp",
+    "mean": 1.2,
+    "alert": "orange"
+  },
+  {
+    "county": "Gorj",
+    "label": "ACP",
+    "type": "acp",
+    "mean": 0.7,
+    "alert": "yellow"
+  },
+  {
+    "county": "Prahova",
+    "label": "ACP",
+    "type": "acp",
+    "mean": 1.2,
+    "alert": "orange"
+  },
+  {
+    "county": "Vrancea",
+    "label": "ACP",
+    "type": "acp",
+    "mean": 1.8,
+    "alert": "red"
+  },
+  {
+    "county": "Ia\u0219i",
+    "label": "ACP",
+    "type": "acp",
+    "mean": 0.3,
+    "alert": "green"
+  },
+  {
+    "county": "Cluj",
+    "label": "ACP",
+    "type": "acp",
+    "mean": 1.2,
+    "alert": "orange"
+  },
+  {
+    "county": "Gala\u021bi",
+    "label": "ACP",
+    "type": "acp",
+    "mean": 0.3,
+    "alert": "green"
+  },
+  {
+    "county": "Bucure\u0219ti",
+    "label": "ACP",
+    "type": "acp",
+    "mean": 0.7,
+    "alert": "yellow"
+  }
+]
