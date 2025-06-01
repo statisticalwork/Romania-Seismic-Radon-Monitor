@@ -1,7 +1,7 @@
 Based on Romanian The National Institute for Earth Physics NIEP data stations
 www.infp.ro
 The web system monitor, aler and forecast is meant for study and research only.
-Only for demonstration usage.
+Only for demonstration usage. Coded by Adrian Lavric 
 
 Live 
 https://radon.qgiengine.com/
