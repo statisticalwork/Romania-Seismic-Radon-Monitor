@@ -18,6 +18,72 @@
       font-size: 14px;
     }
   </style>
+  
+  <style>
+    #map {
+      height: 100vh;
+    }
+
+    .legend {
+      background: white;
+      padding: 6px;
+      line-height: 1.4em;
+      font-size: 14px;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding-bottom: 320px; /* space for popup */
+    }
+
+    .popup-container {
+      display: none; /* hidden by default */
+      width: 80%;
+      max-width: 90%;
+      height: 100px;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: transparent;
+      
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      z-index: 1000;
+      overflow-y: auto;
+      border: 2px solid #00ff88;
+    }
+
+    .popup-header {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 12px;
+      color: green;
+    }
+
+    .popup-content {
+      font-size: 16px;
+      line-height: 1.5
+      color: black;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      background: none;
+      color: #aaa;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .close-btn:hover {
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
 
@@ -40,14 +106,15 @@
     "Iași": [47.15, 27.58],
     "Cluj": [46.77, 23.59],
     "Galați": [45.43, 28.03],
-    "București": [44.43, 26.10]
+    "București": [44.43, 26.10],
+    "Buzau" : [ 45.65,26.55]
   };
 
-  // All sensors from your original JSON (inline version)
+  
   const sensors = [
     {"county":"Vrancea","label":"DLMdd","type":"radon","mean":107.74,"alert":"green"},
     {"county":"Vrancea","label":"LOPRdd","type":"radon","mean":7.69,"alert":"green"},
-    {"county":"Vrancea","label":"NEHRdd","type":"radon","mean":10461.45,"alert":"red"},
+    {"county":"Buzau","label":"NEHRdd","type":"radon","mean":10461.45,"alert":"red"},
     {"county":"Vrancea","label":"PANCdd","type":"radon","mean":79.85,"alert":"green"},
     {"county":"Vrancea","label":"VRI2Sdd","type":"radon","mean":139.57,"alert":"green"},
     {"county":"Vrancea","label":"PLORSdd","type":"radon","mean":21.96,"alert":"green"},
@@ -130,5 +197,25 @@
   legend.addTo(map);
 </script>
 
+<!-- ✅ Popup shown on page load -->
+<div class="popup-container" id="radonPopup">
+  <button class="close-btn" onclick="document.getElementById('radonPopup').style.display='none'">×</button>
+  <div class="popup-header">AI Radon Alert Prediction</div>
+  <div class="popup-content">
+    Alerting level prediction results for the next interval:<br><br>
+    <strong>Vrancea:</strong><br>
+    • June 09–14, 2025<br>
+    • July 01–04, 2025<br>
+    • July 09, 2025<br>
+    • August 01–10, 2025
+  </div>
+</div>
+
+<!-- ✅ Script to show the popup on load -->
+<script>
+  window.addEventListener('load', function () {
+    document.getElementById('radonPopup').style.display = 'block';
+  });
+</script>
 </body>
 </html>
