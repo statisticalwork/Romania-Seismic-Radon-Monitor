@@ -1,18 +1,134 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Sensors Dashboard</title>
-  <script src="sensors.js"></script>
+  <meta charset="utf-8" />
+  <title>Harta Senzori România</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    #map { height: 100vh; }
+    .legend {
+      background: white;
+      padding: 6px;
+      line-height: 1.4em;
+      font-size: 14px;
+    }
+  </style>
 </head>
-<body onload="loadData()">
-  <h1>Sensor Readings Map</h1>
-  <div id="map"></div>
-  <div id="legend">
-    <p>🟩 Green: Normal</p>
-    <p>🟥 Red: Radon Alert</p>
-    <p>🟪 Violet: CO₂ Alert</p>
-    <p>🟧 Orange, 🟨 Yellow, 🟩 Green: ACP Level</p>
-  </div>
+<body>
+
+<div id="map"></div>
+
+<script>
+  // Map
+  const map = L.map('map').setView([45.5, 25], 7);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  // Coordinates for counties
+  const countyCoords = {
+    "Gorj": [44.95, 23.27],
+    "Constanța": [44.18, 28.65],
+    "Prahova": [45.01, 26.01],
+    "Vrancea": [45.85, 27.00],
+    "Iași": [47.15, 27.58],
+    "Cluj": [46.77, 23.59],
+    "Galați": [45.43, 28.03],
+    "București": [44.43, 26.10]
+  };
+
+  // All sensors from your original JSON (inline version)
+  const sensors = [
+    {"county":"Vrancea","label":"DLMdd","type":"radon","mean":107.74,"alert":"green"},
+    {"county":"Vrancea","label":"LOPRdd","type":"radon","mean":7.69,"alert":"green"},
+    {"county":"Vrancea","label":"NEHRdd","type":"radon","mean":10461.45,"alert":"red"},
+    {"county":"Vrancea","label":"PANCdd","type":"radon","mean":79.85,"alert":"green"},
+    {"county":"Vrancea","label":"VRI2Sdd","type":"radon","mean":139.57,"alert":"green"},
+    {"county":"Vrancea","label":"PLORSdd","type":"radon","mean":21.96,"alert":"green"},
+    {"county":"Vrancea","label":"GZRdd","type":"radon","mean":78.15,"alert":"green"},
+    {"county":"Constanța","label":"EFORadon","type":"radon","mean":181.45,"alert":"green"},
+    {"county":"Constanța","label":"EFORco","type":"co2","mean":140.91,"alert":"green"},
+    {"county":"Vrancea","label":"BISRCO2","type":"co2","mean":510.02,"alert":"green"},
+    {"county":"Gorj","label":"DLMCO2","type":"co2","mean":320.87,"alert":"green"},
+    {"county":"Prahova","label":"MlrCO2","type":"co2","mean":329.92,"alert":"green"},
+    {"county":"Prahova","label":"LOPrCO2","type":"co2","mean":401.9,"alert":"green"},
+    {"county":"Constanța","label":"ACP","type":"acp","mean":1.2,"alert":"orange"},
+    {"county":"Gorj","label":"ACP","type":"acp","mean":0.7,"alert":"yellow"},
+    {"county":"Prahova","label":"ACP","type":"acp","mean":1.2,"alert":"orange"},
+    {"county":"Vrancea","label":"ACP","type":"acp","mean":1.8,"alert":"red"},
+    {"county":"Iași","label":"ACP","type":"acp","mean":0.3,"alert":"green"},
+    {"county":"Cluj","label":"ACP","type":"acp","mean":1.2,"alert":"orange"},
+    {"county":"Galați","label":"ACP","type":"acp","mean":0.3,"alert":"green"},
+    {"county":"București","label":"ACP","type":"acp","mean":0.7,"alert":"yellow"}
+  ];
+
+  const layerGroup = L.layerGroup().addTo(map);
+
+  // Plot each sensor
+  sensors.forEach((sensor, i) => {
+    const [baseLat, baseLon] = countyCoords[sensor.county] || [null, null];
+    if (!baseLat) return;
+
+    const lat = baseLat + (i * 0.002); // slight offset to prevent overlaps
+    const lon = baseLon + (i * 0.002);
+
+    if (sensor.type === "acp") {
+      const color = {
+        "low": "#00cc66",
+        "moderate": "#ffff00",
+        "high": "#ff8000",
+        "critical": "#cc0000",
+        "green": "#00cc66",
+        "yellow": "#ffff00",
+        "orange": "#ff8000",
+        "red": "#cc0000"
+      }[sensor.alert] || "#999";
+
+      L.rectangle([
+        [lat - 0.2, lon - 0.3],
+        [lat + 0.2, lon + 0.3]
+      ], {
+        color: color,
+        weight: 1,
+        fillOpacity: 0.4
+      }).addTo(layerGroup)
+        .bindPopup(`📛 <b>${sensor.label}</b><br>${sensor.county}<br>ACP: ${sensor.mean} (${sensor.alert})`);
+
+    } else {
+      const emoji = sensor.alert === "red" ? "❤️" :
+                    sensor.alert === "violet" ? "💜" : "💚";
+
+      L.circleMarker([lat, lon], {
+        radius: 9,
+        color: sensor.alert,
+        fillColor: sensor.alert,
+        fillOpacity: 0.75
+      }).addTo(layerGroup)
+        .bindPopup(`<b>${sensor.label}</b><br>${sensor.county}<br>${emoji} ${sensor.mean} (${sensor.type})`);
+    }
+  });
+
+  // Legend
+  const legend = L.control({position: 'topright'});
+  legend.onAdd = function () {
+    const div = L.DomUtil.create('div', 'legend');
+    div.innerHTML += "<b>🔲 ACP Nivele</b><br>";
+    div.innerHTML += '<span style="color:#00cc66;">⬛ low</span><br>';
+    div.innerHTML += '<span style="color:#32a862;">✅ moderate</span><br>';
+    div.innerHTML += '<span style="color:#a86d32;">🟧 high</span><br>';
+    div.innerHTML += '<span style="color:#a83236;">🟥 critical</span><br><br>';
+    div.innerHTML += "<b>⭕️ Alerta senzori</b><br>";
+    div.innerHTML += '💚 ok<br>❤️ radon alert<br>💜 CO₂ alert<br>';
+    return div;
+  };
+  legend.addTo(map);
+</script>
+
 </body>
 </html>
